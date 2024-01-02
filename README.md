@@ -11,9 +11,12 @@ Currently, two official plugins are available:
 
 Cách custom css trong MUI
 theme: tạo layout đồng nhất cho cả 1 trang
+
 sx : css nhanh or custom style trong 1 component MUI hỗ trợ, ( BOX, Input,...)
-styled : custom lại component để tái sử dụng
+
+styled : custom lại component để tái sử dụng,
 nếu dùng global style, khai báo const để tránh re-rendering
+
 const globalStyles= <GlobalStyle style={...}/>
 return(<>
 {globalStyles}

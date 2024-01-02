@@ -19,17 +19,17 @@ function App() {
       >
         <MenuItem value="light">
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <LightModeIcon /> Light
+            <LightModeIcon fontSize="small" /> Light
           </Box>
         </MenuItem>
         <MenuItem value="dark">
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <DarkModeOutlinedIcon /> Dark
+            <DarkModeOutlinedIcon fontSize="small" /> Dark
           </Box>
         </MenuItem>
         <MenuItem value="system">
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <SettingsBrightnessIcon /> System
+            <SettingsBrightnessIcon fontSize="small" /> System
           </Box>
         </MenuItem>
       </Select>
@@ -41,7 +41,7 @@ function App() {
         }}
         variant="contained"
       >
-        Hello {mode === "light" ? "light" : "dark"}
+        Hello {mode}
       </Button>
     </>
   );

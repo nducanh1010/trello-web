@@ -4,7 +4,7 @@ function App() {
   return (
     <>
       {/*React Router Dom*/}
-      <Board />
+      <Board /> 
     </>
   );
 }

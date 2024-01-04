@@ -16,7 +16,7 @@ export default function ModeSelect() {
   };
   return (
     <>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <FormControl size="small">
         <InputLabel id="label-select-dark-light">Mode</InputLabel>
         <Select value={mode} onChange={handleChange} label="Mode" style={{}}>
           <MenuItem value="light">

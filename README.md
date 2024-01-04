@@ -21,3 +21,5 @@ const globalStyles= <GlobalStyle style={...}/>
 return(<>
 {globalStyles}
 </>)
+
+ - Tất cả Input đều cần đặt trong FormControl

@@ -8,6 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Check from "@mui/icons-material/Check";
 
 import { Box } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 function Templates() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -25,6 +26,7 @@ function Templates() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        endIcon={<ExpandMore/>}
       >
         Templates
       </Button>

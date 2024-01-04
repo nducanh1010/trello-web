@@ -11,6 +11,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import { Box } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 function Workspaces() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -28,6 +29,7 @@ function Workspaces() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        endIcon={<ExpandMore/>}
       >
         Workspaces
       </Button>

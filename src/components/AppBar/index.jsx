@@ -1,4 +1,4 @@
-import { Box, Button, SvgIcon, TextField } from "@mui/material";
+import { Badge, Box, Button, SvgIcon, TextField, Tooltip } from "@mui/material";
 import ModeSelect from "@/components/ModeSelect";
 import AppsIcon from "@mui/icons-material/Apps";
 import { ReactComponent as trelloLogo } from "@/assets/trello.svg";
@@ -7,6 +7,8 @@ import Workspaces from "./Menus/Workspaces";
 import Recent from "./Menus/Recent";
 import Starred from "./Menus/Starred";
 import Templates from "./Menus/Templates";
+import { HelpOutline, NotificationsNone } from "@mui/icons-material";
+import Profiles from "./Menus/Profiles";
 function AppBar() {
   return (
     <Box
@@ -59,6 +61,15 @@ function AppBar() {
           size="small"
         />
         <ModeSelect />
+        <Tooltip title="Notifications">
+          <Badge sx={{ cursor: "pointer" }} color="secondary" variant="dot">
+            <NotificationsNone />
+          </Badge>
+        </Tooltip>
+        <Tooltip title="Help">
+          <HelpOutline sx={{ cursor: "pointer" }} />
+        </Tooltip>
+        <Profiles />
       </Box>
     </Box>
   );

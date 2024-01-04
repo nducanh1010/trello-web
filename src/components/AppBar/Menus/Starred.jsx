@@ -8,6 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Check from "@mui/icons-material/Check";
 
 import { Box } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 function Starred() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -25,6 +26,7 @@ function Starred() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        endIcon={<ExpandMore/>}
       >
         Starred
       </Button>

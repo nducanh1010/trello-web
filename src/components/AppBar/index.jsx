@@ -7,7 +7,11 @@ import Workspaces from "./Menus/Workspaces";
 import Recent from "./Menus/Recent";
 import Starred from "./Menus/Starred";
 import Templates from "./Menus/Templates";
-import { HelpOutline, NotificationsNone } from "@mui/icons-material";
+import {
+  HelpOutline,
+  LibraryAdd,
+  NotificationsNone,
+} from "@mui/icons-material";
 import Profiles from "./Menus/Profiles";
 function AppBar() {
   return (
@@ -21,6 +25,7 @@ function AppBar() {
         justifyContent: "space-between",
         gap: 2,
         overflowX: "auto",
+        paddingX: 2,
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -54,7 +59,9 @@ function AppBar() {
           <Recent />
           <Starred />
           <Templates />
-          <Button variant="outlined">Create</Button>
+          <Button startIcon={<LibraryAdd />} variant="outlined">
+            Create
+          </Button>
         </Box>
       </Box>
 

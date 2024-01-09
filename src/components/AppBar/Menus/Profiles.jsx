@@ -1,11 +1,8 @@
 import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Check from "@mui/icons-material/Check";
 
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
@@ -24,12 +21,12 @@ function Profiles() {
         <IconButton
           onClick={handleClick}
           size="small"
-          sx={{ p: 0 }}
+          sx={{ p: 0, color: "white" }}
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          <Avatar sx={{ width: 34, height: 34, fontSize: 16 }}>M</Avatar>
+          <Avatar sx={{ width: 36, height: 36, fontSize: 16 }}>M</Avatar>
         </IconButton>
       </Tooltip>
 

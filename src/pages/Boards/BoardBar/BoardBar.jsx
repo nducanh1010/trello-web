@@ -1,3 +1,4 @@
+import { capitalizeFirstLetter } from "@/utils/formatters";
 import {
   AddToDrive,
   Bolt,
@@ -21,7 +22,8 @@ const MENU_STYLES = {
     bgcolor: "primary.50",
   },
 };
-function BoardBar() {
+function BoardBar(props) {
+  const { board } = props;
   return (
     <Box
       sx={{
@@ -39,12 +41,17 @@ function BoardBar() {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <Chip sx={MENU_STYLES} icon={<Dashboard />} clickable label="board" />
+        <Chip
+          sx={MENU_STYLES}
+          icon={<Dashboard />}
+          clickable
+          label={board.title}
+        />
         <Chip
           sx={MENU_STYLES}
           icon={<VpnLock />}
           clickable
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
         />
         <Chip
           sx={MENU_STYLES}
@@ -78,12 +85,11 @@ function BoardBar() {
               height: 34,
               fontSize: 16,
               border: "none",
-              color:'white',
-              cursor:'pointer',
-              "&:first-of-type":{
-                bgcolor:"#a4b0be"
-              }
-
+              color: "white",
+              cursor: "pointer",
+              "&:first-of-type": {
+                bgcolor: "#a4b0be",
+              },
             },
           }}
         >

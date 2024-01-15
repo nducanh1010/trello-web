@@ -1,3 +1,5 @@
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Attachment, Comment, Group } from "@mui/icons-material";
 import {
   Button,
@@ -9,6 +11,12 @@ import {
 } from "@mui/material";
 
 function Card({ card }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: card._id, data: { ...card } });
+  const dndKitCardStyle = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
   const shouldShowCardAction = () => {
     return (
       !!card?.memberIds?.length ||
@@ -18,6 +26,10 @@ function Card({ card }) {
   };
   return (
     <MuiCard
+      ref={setNodeRef}
+      style={dndKitCardStyle}
+      {...attributes}
+      {...listeners}
       sx={{
         cursor: "pointer",
         boxShadow: "0 1px 1px rgba(0,0,0,0.2)",

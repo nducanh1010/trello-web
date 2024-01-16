@@ -22,12 +22,19 @@ import { mapOrder } from "@/utils/sorts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 function Column({ column }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: column._id, data: { ...column } });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: column._id, data: { ...column } });
   const dndKitColumnStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
     height: "100%",
+    opacity: isDragging ? 0.5 : undefined, // làm mờ khi kéo
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

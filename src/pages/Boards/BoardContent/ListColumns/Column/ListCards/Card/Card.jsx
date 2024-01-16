@@ -11,11 +11,18 @@ import {
 } from "@mui/material";
 
 function Card({ card }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: card._id, data: { ...card } });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card._id, data: { ...card } });
   const dndKitCardStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : undefined,
   };
   const shouldShowCardAction = () => {
     return (

@@ -23,7 +23,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
   CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD"
 };
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
   const [orderedColumns, setOrderedColumns] = useState([]);
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: { distance: 10 },
@@ -215,22 +215,24 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
       }
     }
     // Xu li keo ttha card
-    if (
-      activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN &&
-      active.id !== over.id
-    ) {
-      const oldColumnIndex = orderedColumns.findIndex(
-        (c) => c._id === active.id
-      );
-      const newColumnIndex = orderedColumns.findIndex((c) => c._id === over.id);
-      // aray-move sắp xếp lại mảng ban đầu
-      const dndOrderedColumns = arrayMove(
-        orderedColumns,
-        oldColumnIndex,
-        newColumnIndex
-      );
-      const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id); // lưu lại vào db
-      setOrderedColumns(dndOrderedColumns);
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      if (active.id !== over.id) {
+        const oldColumnIndex = orderedColumns.findIndex(
+          (c) => c._id === active.id
+        );
+        const newColumnIndex = orderedColumns.findIndex(
+          (c) => c._id === over.id
+        );
+        // aray-move sắp xếp lại mảng ban đầu
+        const dndOrderedColumns = arrayMove(
+          orderedColumns,
+          oldColumnIndex,
+          newColumnIndex
+        );
+        moveColumn(dndOrderedColumns);
+        // giu nguyen tranh flickering giao dien do delay goi api
+        setOrderedColumns(dndOrderedColumns);
+      }
     }
 
     setActiveDragItemId(null);

@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import {
   createNewCardApi,
   createNewColumnApi,
-  fetchBoardDetailApi
+  fetchBoardDetailApi,
+  updateBoardDetailsApi
 } from "@/apis";
 import { isEmpty } from "lodash";
 import { generatePlaceholderCard } from "@/utils/formatters";
@@ -63,6 +64,16 @@ function Board() {
     }
     setBoard(newBoard);
   };
+  const moveColumn = async (dndOrderedColumns) => {
+    const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id); // lưu lại vào db
+    const newBoard = { ...board };
+    newBoard.columns = dndOrderedColumns;
+    newBoard.columnOrderIds = dndOrderedColumnIds;
+    setBoard(newBoard);
+    await updateBoardDetailsApi(newBoard._id, {
+      columnOrderIds: dndOrderedColumnIds
+    });
+  };
   return (
     <>
       <Container
@@ -76,6 +87,7 @@ function Board() {
         <BoardBar board={board} boardId={boardId} />
         <BoardContent
           board={board}
+          moveColumn={moveColumn}
           createNewColumn={createNewColumn}
           createNewCard={createNewCard}
         />

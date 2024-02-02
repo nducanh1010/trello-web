@@ -12,3 +12,7 @@ export const createNewCardApi = async (newCardData) => {
   const request = await apiClient.post(`/v1/cards`, newCardData);
   return request;
 };
+export const updateBoardDetailsApi = async (boardId, updateData) => {
+  const request = await apiClient.put(`/v1/boards/${boardId}`, updateData);
+  return request;
+};

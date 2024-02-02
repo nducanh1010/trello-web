@@ -1,18 +1,26 @@
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Column from "./Column/Column";
-import { Close, NoteAdd, Search } from "@mui/icons-material";
+import { Close, NoteAdd } from "@mui/icons-material";
 import {
   SortableContext,
-  horizontalListSortingStrategy,
+  horizontalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn ,createNewCard}) {
   const [openNewColForm, setOpenNewColForm] = useState(false);
   const handleOpenForm = () => setOpenNewColForm(!openNewColForm);
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const addNewColumn = () => {
-    if (!newColumnTitle) return;
+  const addNewColumn = async () => {
+    if (!newColumnTitle) {
+      toast.error("Please enter Columns title");
+      return;
+    }
+    const newColumnData = {
+      title: newColumnTitle
+    };
+    await createNewColumn(newColumnData);
     handleOpenForm();
     setNewColumnTitle("");
   };
@@ -29,11 +37,11 @@ function ListColumns({ columns }) {
           display: "flex",
           overflowX: "auto",
           overflowY: "hidden",
-          "&::-webkit-scrollbar-track": { m: 0 },
+          "&::-webkit-scrollbar-track": { m: 0 }
         }}
       >
         {columns?.map((column) => (
-          <Column column={column} key={column._id} />
+          <Column column={column} key={column._id} createNewCard={createNewCard} />
         ))}
 
         {/* Box ADD New Column */}
@@ -45,7 +53,7 @@ function ListColumns({ columns }) {
               mx: 2,
               borderRadius: "6px",
               height: "fit-content",
-              bgcolor: "#ffffff3d",
+              bgcolor: "#ffffff3d"
             }}
           >
             <Button
@@ -55,7 +63,7 @@ function ListColumns({ columns }) {
                 width: "100%",
                 justifyContent: "flex-start",
                 pl: 2.5,
-                py: 1,
+                py: 1
               }}
               startIcon={<NoteAdd />}
             >
@@ -75,7 +83,7 @@ function ListColumns({ columns }) {
               p: 1,
               borderRadius: "6px",
               height: "fit-content",
-              bgcolor: "#ffffff3d",
+              bgcolor: "#ffffff3d"
             }}
           >
             <TextField
@@ -86,15 +94,15 @@ function ListColumns({ columns }) {
                 "& label.Mui-focused": { color: "white" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "white",
+                    borderColor: "white"
                   },
                   "&:hover fieldset": {
-                    borderColor: "white",
+                    borderColor: "white"
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
+                    borderColor: "white"
+                  }
+                }
               }}
               // value={search}
               // onChange={(e) => {
@@ -114,7 +122,7 @@ function ListColumns({ columns }) {
                   boxShadow: "none",
                   border: "0.5px solid",
                   borderColor: (theme) => theme.palette.success.main,
-                  "&:hover": { bgcolor: (theme) => theme.palette.success.main },
+                  "&:hover": { bgcolor: (theme) => theme.palette.success.main }
                 }}
               >
                 Add column
@@ -126,8 +134,8 @@ function ListColumns({ columns }) {
                   color: "white",
                   cursor: "pointer",
                   "&:hover": {
-                    color: (theme) => theme.palette.warning.light,
-                  },
+                    color: (theme) => theme.palette.warning.light
+                  }
                 }}
               />
             </Box>

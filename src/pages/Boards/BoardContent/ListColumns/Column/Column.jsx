@@ -16,27 +16,27 @@ import {
   Close,
   DeleteForever,
   DragHandle,
-  ExpandMore,
+  ExpandMore
 } from "@mui/icons-material";
 import ListCards from "./ListCards/ListCards";
 import { mapOrder } from "@/utils/sorts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import theme from "@/theme";
-function Column({ column }) {
+import { toast } from "react-toastify";
+function Column({ column, createNewCard }) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging,
+    isDragging
   } = useSortable({ id: column._id, data: { ...column } });
   const dndKitColumnStyle = {
     transform: CSS.Translate.toString(transform),
     transition,
     height: "100%",
-    opacity: isDragging ? 0.5 : undefined, // làm mờ khi kéo
+    opacity: isDragging ? 0.5 : undefined // làm mờ khi kéo
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -50,8 +50,13 @@ function Column({ column }) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const handleOpenForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState("");
-  const addNewCard = () => {
-    if (!newCardTitle) return;
+  const addNewCard = async () => {
+    if (!newCardTitle) {
+      toast.error("Please enter card title", { position: "bottom-right" });
+      return;
+    }
+
+    await createNewCard({ title: newCardTitle, columnId: column._id });
     handleOpenForm();
     setNewCardTitle("");
   };
@@ -68,7 +73,7 @@ function Column({ column }) {
           borderRadius: "6px",
           height: "fit-content",
           maxHeight: (theme) =>
-            `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`,
+            `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
         }}
       >
         <Box
@@ -77,7 +82,7 @@ function Column({ column }) {
             p: 2,
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "space-between"
           }}
         >
           <Typography
@@ -103,7 +108,7 @@ function Column({ column }) {
               open={open}
               onClose={handleClose}
               MenuListProps={{
-                "aria-labelledby": "basic-column-dropdown",
+                "aria-labelledby": "basic-column-dropdown"
               }}
             >
               <MenuItem>
@@ -147,11 +152,11 @@ function Column({ column }) {
           </Box>
         </Box>
         {/* List Cards */}
-        <ListCards cards={orderedCards} />
+        <ListCards cards={orderedCards} createNewCard={createNewCard} />
         <Box
           sx={{
             height: (theme) => theme.trello.columnFooterHeight,
-            p: 2,
+            p: 2
           }}
         >
           {!openNewCardForm ? (
@@ -159,7 +164,7 @@ function Column({ column }) {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "space-between"
               }}
             >
               <Button onClick={() => handleOpenForm()} startIcon={<AddCard />}>
@@ -175,7 +180,7 @@ function Column({ column }) {
                 height: "100% ",
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 1
               }}
             >
               <TextField
@@ -185,30 +190,31 @@ function Column({ column }) {
                   "& input": {
                     color: (theme) => theme.palette.primary.main,
                     bgcolor: (theme) =>
-                      theme.palette.mode === "dark" ? "#333643" : "white",
+                      theme.palette.mode === "dark" ? "#333643" : "white"
                   },
                   "& label.Mui-focused": {
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.palette.primary.main
                   },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: (theme) => theme.palette.primary.main,
+                      borderColor: (theme) => theme.palette.primary.main
                     },
                     "&:hover fieldset": {
-                      borderColor: (theme) => theme.palette.primary.main,
+                      borderColor: (theme) => theme.palette.primary.main
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: (theme) => theme.palette.primary.main,
-                    },
+                      borderColor: (theme) => theme.palette.primary.main
+                    }
                   },
                   "& .MuiOutlinedInput-input": {
-                    borderRadius: 1,
-                  },
+                    borderRadius: 1
+                  }
                 }}
                 // value={search}
                 // onChange={(e) => {
                 //   setSearch(e.target.value);
                 // }}
+                data-no-dnd="true"
                 label="Enter card
                  title..."
                 type="text"
@@ -222,13 +228,14 @@ function Column({ column }) {
                   variant="contained"
                   color="success"
                   size="small"
+                  data-no-dnd="true"
                   sx={{
                     boxShadow: "none",
                     border: "0.5px solid",
                     borderColor: (theme) => theme.palette.success.main,
                     "&:hover": {
-                      bgcolor: (theme) => theme.palette.success.main,
-                    },
+                      bgcolor: (theme) => theme.palette.success.main
+                    }
                   }}
                 >
                   Add
@@ -239,7 +246,7 @@ function Column({ column }) {
                   sx={{
                     cursor: "pointer",
 
-                    color: (theme) => theme.palette.warning.light,
+                    color: (theme) => theme.palette.warning.light
                   }}
                 />
               </Box>

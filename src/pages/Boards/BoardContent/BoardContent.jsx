@@ -4,17 +4,13 @@ import { mapOrder } from "@/utils/sorts";
 import {
   DndContext,
   DragOverlay,
-  MouseSensor,
-  PointerSensor,
-  TouchSensor,
-  closestCenter,
   closestCorners,
   defaultDropAnimationSideEffects,
   getFirstCollision,
   pointerWithin,
   rectIntersection,
   useSensor,
-  useSensors,
+  useSensors
 } from "@dnd-kit/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -22,22 +18,23 @@ import Column from "./ListColumns/Column/Column";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
 import { cloneDeep, isEmpty } from "lodash";
 import { generatePlaceholderCard } from "@/utils/formatters";
+import { MouseSensor, TouchSensor } from "@/customLibrary/DndKitSensors";
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
-  CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD",
+  CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD"
 };
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard }) {
   const [orderedColumns, setOrderedColumns] = useState([]);
-  const pointerSensor = useSensor(PointerSensor, {
-    activationConstraint: { distance: 10 },
-  });
+  // const pointerSensor = useSensor(PointerSensor, {
+  //   activationConstraint: { distance: 10 },
+  // });
   // mouse di chuyen 10x se kich hoat event
   const mouseSensor = useSensor(MouseSensor, {
-    activationConstraint: { distance: 10 },
+    activationConstraint: { distance: 10 }
   });
   // Nhấn giữ 250ms và dung sai ( di chuyển khoảng 5px sẽ kích hoạt event)
   const touchSensor = useSensor(TouchSensor, {
-    activationConstraint: { delay: 250, tolerance: 500 },
+    activationConstraint: { delay: 250, tolerance: 500 }
   });
   const sensors = useSensors(mouseSensor, touchSensor);
   // cungf mot thoi diem chi  co 1 phan tu duoc keo ( column or card)
@@ -121,7 +118,7 @@ function BoardContent({ board }) {
         // them card keo vao over column theo index moi
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, {
           ...activeDraggingCardData,
-          columnId: nextOverColumn._id,
+          columnId: nextOverColumn._id
         });
         // xoa placeholder card
         nextOverColumn.cards = nextOverColumn.cards.filter(
@@ -144,7 +141,7 @@ function BoardContent({ board }) {
     if (!over || !active) return;
     const {
       id: activeDraggingCardId,
-      data: { current: activeDraggingCardData },
+      data: { current: activeDraggingCardData }
     } = active;
     // la card dang tuong tac tren hoac duoi so voi card dang keo
     const { id: overCardId } = over;
@@ -171,7 +168,7 @@ function BoardContent({ board }) {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const {
         id: activeDraggingCardId,
-        data: { current: activeDraggingCardData },
+        data: { current: activeDraggingCardData }
       } = active;
       // la card dang tuong tac tren hoac duoi so voi card dang keo
       const { id: overCardId } = over;
@@ -245,10 +242,10 @@ function BoardContent({ board }) {
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
         active: {
-          opacity: "0.5",
-        },
-      },
-    }),
+          opacity: "0.5"
+        }
+      }
+    })
   };
   const collisionDetectionStrategy = useCallback(
     (args) => {
@@ -275,7 +272,7 @@ function BoardContent({ board }) {
                   checkColumn?.cardOrderIds?.includes(container._id)
                 );
               }
-            ),
+            )
           })[0]?.id;
         }
         lastOverId.current = overId;
@@ -302,10 +299,14 @@ function BoardContent({ board }) {
           display: "flex",
           overflowX: "auto",
           overflowY: "hidden",
-          p: "10px 0",
+          p: "10px 0"
         }}
       >
-        <ListColumns columns={orderedColumns}></ListColumns>
+        <ListColumns
+          columns={orderedColumns}
+          createNewColumn={createNewColumn}
+          createNewCard={createNewCard}
+        ></ListColumns>
         <DragOverlay dropAnimation={dropAnimation}>
           {!activeDragItemType && null}
           {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (

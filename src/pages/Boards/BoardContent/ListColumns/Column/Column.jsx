@@ -19,7 +19,6 @@ import {
   ExpandMore
 } from "@mui/icons-material";
 import ListCards from "./ListCards/ListCards";
-import { mapOrder } from "@/utils/sorts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { toast } from "react-toastify";
@@ -46,7 +45,7 @@ function Column({ column, createNewCard }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+  const orderedCards = column.cards;
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const handleOpenForm = () => setOpenNewCardForm(!openNewCardForm);
   const [newCardTitle, setNewCardTitle] = useState("");

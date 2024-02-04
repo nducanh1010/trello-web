@@ -16,3 +16,7 @@ export const updateBoardDetailsApi = async (boardId, updateData) => {
   const request = await apiClient.put(`/v1/boards/${boardId}`, updateData);
   return request;
 };
+export const updateColumnDetailsApi = async (columnId, updateData) => {
+  const request = await apiClient.put(`/v1/columns/${columnId}`, updateData);
+  return request;
+};

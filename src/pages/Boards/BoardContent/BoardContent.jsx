@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import ListColumns from "./ListColumns/ListColumns";
-import { mapOrder } from "@/utils/sorts";
 import {
   DndContext,
   DragOverlay,
@@ -23,7 +22,13 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
   CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD"
 };
-function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
+function BoardContent({
+  board,
+  createNewColumn,
+  createNewCard,
+  moveColumn,
+  moveCardSameColumn
+}) {
   const [orderedColumns, setOrderedColumns] = useState([]);
   // const pointerSensor = useSensor(PointerSensor, {
   //   activationConstraint: { distance: 10 },
@@ -46,7 +51,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
   // DDiem va cham cuoi cung xu li thuat toan phat hien va cham
   const lastOverId = useRef(null);
   useEffect(() => {
-    setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
+    setOrderedColumns(board.columns);
   }, [board]);
   const findColumnByCardId = (cardId) => {
     return orderedColumns.find((column) =>
@@ -201,6 +206,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
           oldCardIndex,
           newCardIndex
         );
+        const dndOrderedCardIds = dndOrderedCards.map((c) => c._id);
         setOrderedColumns((prevColumns) => {
           const nextColumns = cloneDeep(prevColumns);
           //tim den column dang tha
@@ -209,9 +215,14 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
           );
           /// cap nhat lai gia tri moi
           targetColumn.cards = dndOrderedCards;
-          targetColumn.cardOrderIds = dndOrderedCards.map((c) => c._id);
+          targetColumn.cardOrderIds = dndOrderedCardIds;
           return nextColumns;
         });
+        moveCardSameColumn(
+          dndOrderedCards,
+          dndOrderedCardIds,
+          oldColumnWhenDraggingCard._id
+        );
       }
     }
     // Xu li keo ttha card
@@ -229,9 +240,9 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumn }) {
           oldColumnIndex,
           newColumnIndex
         );
+        setOrderedColumns(dndOrderedColumns);
         moveColumn(dndOrderedColumns);
         // giu nguyen tranh flickering giao dien do delay goi api
-        setOrderedColumns(dndOrderedColumns);
       }
     }
 

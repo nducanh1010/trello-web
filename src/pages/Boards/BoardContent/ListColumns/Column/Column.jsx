@@ -22,7 +22,8 @@ import ListCards from "./ListCards/ListCards";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { toast } from "react-toastify";
-function Column({ column, createNewCard }) {
+import { useConfirm } from "material-ui-confirm";
+function Column({ column, createNewCard, deleteColumnDetails }) {
   const {
     attributes,
     listeners,
@@ -59,7 +60,18 @@ function Column({ column, createNewCard }) {
     handleOpenForm();
     setNewCardTitle("");
   };
-  const handleDeleteColumn = () => {};
+  const confirmDelete = useConfirm();
+  const handleDeleteColumn = () => {
+    confirmDelete({
+      title: "Delete Column?",
+      description:
+        "This action will permarnently delete your Column and its Cards! Are u sure ?!",
+      confirmationText: "Confirm",
+      cancellationText: "Cancel"
+    })
+      .then(()=>deleteColumnDetails(column._id))
+      .catch(() => {});
+  };
   return (
     <div ref={setNodeRef} style={dndKitColumnStyle} {...attributes}>
       <Box

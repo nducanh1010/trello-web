@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   createNewCardApi,
   createNewColumnApi,
+  deleteColumnDetailsApi,
   fetchBoardDetailApi,
   moveCardToDifferentColumnApi,
   updateBoardDetailsApi,
@@ -14,11 +15,11 @@ import {
 import { isEmpty } from "lodash";
 import { generatePlaceholderCard } from "@/utils/formatters";
 import { mapOrder } from "@/utils/sorts";
+import { toast } from "react-toastify";
 
 function Board() {
   const [board, setBoard] = useState(null);
   const boardId = "65b9c46dc4e6bd02d3a56f0e";
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -148,6 +149,16 @@ B2: cap nhat lai id field moi cua card da keo
       </Box>
     );
   }
+  const deleteColumnDetails = async (colId) => {
+    const newBoard = { ...board };
+    newBoard.columns = newBoard.columns.filter((c) => c._id !== colId);
+    newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+      (_id) => _id !== colId
+    );
+    setBoard(newBoard);
+    const res = await deleteColumnDetailsApi(colId);
+    toast.success(res?.deleteResult)
+  };
   return (
     <>
       <Container
@@ -160,6 +171,7 @@ B2: cap nhat lai id field moi cua card da keo
         <AppBar />
         <BoardBar board={board} boardId={boardId} />
         <BoardContent
+          deleteColumnDetails={deleteColumnDetails}
           board={board}
           moveColumn={moveColumn}
           createNewColumn={createNewColumn}

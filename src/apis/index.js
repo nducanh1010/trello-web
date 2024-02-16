@@ -19,11 +19,15 @@ export const updateBoardDetailsApi = async (boardId, updateData) => {
 export const moveCardToDifferentColumnApi = async (updateData) => {
   const request = await apiClient.put(
     `/v1/boards/supports/moving_card`,
-    updateData   
+    updateData
   );
   return request;
 };
 export const updateColumnDetailsApi = async (columnId, updateData) => {
   const request = await apiClient.put(`/v1/columns/${columnId}`, updateData);
+  return request;
+};
+export const deleteColumnDetailsApi = async (columnId) => {
+  const request = await apiClient.delete(`/v1/columns/${columnId}`);
   return request;
 };

@@ -4,12 +4,11 @@ import axios from "axios";
 const apiClient = axios.create({
   baseURL: API_ROOT,
   headers: {
-    "Content-type": "application/json",
-  },
+    "Content-type": "application/json"
+  }
 });
 apiClient.interceptors.response.use(
   function (response) {
-    console.log("res", response);
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;

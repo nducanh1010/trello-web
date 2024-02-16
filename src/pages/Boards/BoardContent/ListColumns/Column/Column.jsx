@@ -59,6 +59,7 @@ function Column({ column, createNewCard }) {
     handleOpenForm();
     setNewCardTitle("");
   };
+  const handleDeleteColumn = () => {};
   return (
     <div ref={setNodeRef} style={dndKitColumnStyle} {...attributes}>
       <Box
@@ -106,13 +107,24 @@ function Column({ column, createNewCard }) {
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
+              onClick={handleClose}
               MenuListProps={{
                 "aria-labelledby": "basic-column-dropdown"
               }}
             >
-              <MenuItem>
+              <MenuItem
+                onClick={() => handleOpenForm()}
+                sx={{
+                  "&:hover": {
+                    color: "success.light",
+                    "& .add-card-icon": {
+                      color: "success.light"
+                    }
+                  }
+                }}
+              >
                 <ListItemIcon>
-                  <AddCard fontSize="small" />
+                  <AddCard className="add-card-icon" fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Add new card</ListItemText>
               </MenuItem>
@@ -135,17 +147,30 @@ function Column({ column, createNewCard }) {
                 <ListItemText>Paste</ListItemText>
               </MenuItem>
               <Divider />
+              <MenuItem
+                onClick={() => handleDeleteColumn()}
+                sx={{
+                  "&:hover": {
+                    color: "warning.dark",
+                    "& .delete-forever-icon": {
+                      color: "warning.dark"
+                    }
+                  }
+                }}
+              >
+                <ListItemIcon>
+                  <DeleteForever
+                    className="delete-forever-icon"
+                    fontSize="small"
+                  />
+                </ListItemIcon>
+                <ListItemText>Remove this column</ListItemText>
+              </MenuItem>
               <MenuItem>
                 <ListItemIcon>
                   <Cloud fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Archive this column</ListItemText>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <DeleteForever fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Remove this column</ListItemText>
               </MenuItem>
             </Menu>
           </Box>

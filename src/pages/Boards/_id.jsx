@@ -2,12 +2,12 @@ import { Box, CircularProgress, Container, Typography } from "@mui/material";
 import AppBar from "@/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import BoardContent from "./BoardContent/BoardContent";
-import { mockData } from "@/apis/mock-data";
 import { useEffect, useState } from "react";
 import {
   createNewCardApi,
   createNewColumnApi,
   fetchBoardDetailApi,
+  moveCardToDifferentColumnApi,
   updateBoardDetailsApi,
   updateColumnDetailsApi
 } from "@/apis";
@@ -34,8 +34,7 @@ function Board() {
             column.cardOrderIds = [generatePlaceholderCard(column)._id];
           } else {
             // sap xep thu tu card truoc khi dua xuong array
-            column.cards = mapOrder(column.cards, column.cardOrderIds, "_id")
-;
+            column.cards = mapOrder(column.cards, column.cardOrderIds, "_id");
           }
         });
         setBoard(board);
@@ -66,8 +65,14 @@ function Board() {
       (column) => column._id === res.columnId
     );
     if (columnToUpdate) {
-      columnToUpdate.cards.push(res);
-      columnToUpdate.cardOrderIds.push(res._id);
+      // fix bug card co 1 phan tu placeholder day len BE
+      if (columnToUpdate.cards.some((card) => card.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [res];
+        columnToUpdate.cardOrderIds = [res._id];
+      } else {
+        columnToUpdate.cards.push(res);
+        columnToUpdate.cardOrderIds.push(res._id);
+      }
     }
     setBoard(newBoard);
   };
@@ -82,7 +87,6 @@ function Board() {
     });
   };
   const moveCardSameColumn = (dndOrderedCards, dndOrderedCardIds, columnId) => {
-    console.log("check", dndOrderedCards, dndOrderedCardIds, columnId);
     const newBoard = { ...board };
     const columnToUpdate = newBoard.columns.find(
       (column) => column._id === columnId
@@ -93,6 +97,39 @@ function Board() {
     }
     setBoard(newBoard);
     updateColumnDetailsApi(columnId, { cardOrderIds: dndOrderedCardIds });
+  };
+  /*
+  di chuyen card sang column khac
+B1: cap nhat mang cardOrderIds cua Column ban dau
+B2: cap nhat mang cardOrderIds cua Column tiep theo
+B2: cap nhat lai id field moi cua card da keo
+=> Lam 1 api support rieng
+  */
+
+  const moveCardDifferentColumn = (
+    currentCardId,
+    prevColumnId,
+    nextColumnId,
+    dndOrderedColumns
+  ) => {
+    const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id); // lưu lại vào db
+    const newBoard = { ...board };
+    newBoard.columns = dndOrderedColumns;
+    newBoard.columnOrderIds = dndOrderedColumnIds;
+    setBoard(newBoard);
+    let prevCardOrderIds = dndOrderedColumns.find(
+      (c) => c._id === prevColumnId
+    )?.cardOrderIds;
+    // truong hop do la phan tu cuoi cung se loi, can xoa di truoc khi gui cho BE
+    if (prevCardOrderIds[0].includes("placeholder-card")) prevCardOrderIds = [];
+    moveCardToDifferentColumnApi({
+      currentCardId,
+      prevColumnId,
+      prevCardOrderIds,
+      nextColumnId,
+      nextCardOrderIds: dndOrderedColumns.find((c) => c._id === nextColumnId)
+        ?.cardOrderIds
+    });
   };
   if (!board) {
     return (
@@ -128,6 +165,7 @@ function Board() {
           createNewColumn={createNewColumn}
           createNewCard={createNewCard}
           moveCardSameColumn={moveCardSameColumn}
+          moveCardDifferentColumn={moveCardDifferentColumn}
         />
       </Container>
     </>

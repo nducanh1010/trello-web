@@ -6,10 +6,14 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/s
 import theme from "./theme.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// confirm dialog recommend
+import { ConfirmProvider } from "material-ui-confirm";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <CssVarsProvider theme={theme}>
-    <CssBaseline />
-    <App />
-    <ToastContainer theme="colored" position="bottom-left" />
+    <ConfirmProvider>
+      <CssBaseline />
+      <App />
+      <ToastContainer theme="colored" position="bottom-left" />
+    </ConfirmProvider>
   </CssVarsProvider>
 );

@@ -27,7 +27,8 @@ function BoardContent({
   createNewColumn,
   createNewCard,
   moveColumn,
-  moveCardSameColumn
+  moveCardSameColumn,
+  moveCardDifferentColumn
 }) {
   const [orderedColumns, setOrderedColumns] = useState([]);
   // const pointerSensor = useSensor(PointerSensor, {
@@ -77,7 +78,8 @@ function BoardContent({
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns((prevColumn) => {
       // tim index card noi ma card duoc tha
@@ -134,6 +136,15 @@ function BoardContent({
           (card) => card._id
         );
       }
+      // neu func goi tu handleDragEnd thi goi api
+      if (triggerFrom === "handleDragEnd") {
+        moveCardDifferentColumn(
+          activeDraggingCardId,
+          oldColumnWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumn
+        );
+      }
       return nextColumn;
     });
   };
@@ -162,7 +173,8 @@ function BoardContent({
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        "handleDragOver"
       );
     }
   };
@@ -188,7 +200,8 @@ function BoardContent({
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          "handleDragEnd"
         );
       } else {
         // keo tha trong 1 column
